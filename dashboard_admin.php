@@ -15,6 +15,8 @@ $totalSiswa = mysqli_fetch_assoc($querySiswa)['total'];
 
 $queryMapel = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM mata_pelajaran");
 $totalMapel = $queryMapel ? mysqli_fetch_assoc($queryMapel)['total'] : 0;
+
+$queryGuruTerbaru = mysqli_query($koneksi, "SELECT u.nama, u.email FROM user u JOIN role r ON u.idRole = r.idRole WHERE r.namaRole = 'Guru' ORDER BY u.idUser DESC LIMIT 5");
 ?>
 
 <!DOCTYPE html>
@@ -92,14 +94,13 @@ $totalMapel = $queryMapel ? mysqli_fetch_assoc($queryMapel)['total'] : 0;
             font-size: 15px;
         }
 
-        /* Card Styles */
         .card-container {
             display: flex;
             gap: 20px;
         }
         .card {
             background-color: white;
-            padding: 25px 20px; /* Padding dalam card sedikit diperbesar */
+            padding: 25px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             flex: 1;
@@ -125,6 +126,54 @@ $totalMapel = $queryMapel ? mysqli_fetch_assoc($queryMapel)['total'] : 0;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
+        .recent-section {
+            margin-top: 40px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .recent-section h2 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .recent-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .recent-table th, .recent-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .recent-table th {
+            background-color: #f8f9fa;
+            color: #577883;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .recent-table td {
+            color: #333;
+            font-size: 14px;
+        }
+        .recent-table tr:hover {
+            background-color: #fdfdfd;
+        }
+        .badge-aktif {
+            padding: 5px 12px;
+            background-color: #e1f5fe;
+            color: #0288d1;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
@@ -180,6 +229,28 @@ $totalMapel = $queryMapel ? mysqli_fetch_assoc($queryMapel)['total'] : 0;
                         <p>Mata Pelajaran</p>
                         <h3><?php echo $totalMapel; ?></h3>
                     </div>
+                </div>
+            </div>
+
+            <div class="recent-section">
+                <h2>Guru Terbaru</h2>
+                <div class="table-responsive">
+                    <table class="recent-table">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($guru = mysqli_fetch_assoc($queryGuruTerbaru)): ?>
+                                <tr>
+                                    <td><?php echo $guru['nama']; ?></td>
+                                    <td><?php echo $guru['email']; ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
