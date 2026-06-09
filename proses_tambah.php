@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $idRole = 2; 
     $status = 'Aktif';
-    $mataPelajaran = 'Belum ditentukan'; 
+    $idMapel = $_POST['idMapel']; 
+    date_default_timezone_set('Asia/Jakarta');
     $createdAt = date('Y-m-d H:i:s');
 
     mysqli_begin_transaction($koneksi);
@@ -24,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $idUserBaru = mysqli_insert_id($koneksi);
 
-        $queryGuru = "INSERT INTO guru (idUser, nip, mataPelajaran) VALUES (?, ?, ?)";
+        $queryGuru = "INSERT INTO guru (idUser, nip, idMapel) VALUES (?, ?, ?)";
         $stmtGuru = mysqli_prepare($koneksi, $queryGuru);
-        mysqli_stmt_bind_param($stmtGuru, "iss", $idUserBaru, $nip, $mataPelajaran);
+        mysqli_stmt_bind_param($stmtGuru, "isi", $idUserBaru, $nip, $idMapel);
         mysqli_stmt_execute($stmtGuru);
-
+        
         mysqli_commit($koneksi);
         header("Location: kelola_guru.php?status=sukses_tambah");
         exit();

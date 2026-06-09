@@ -116,6 +116,120 @@ body {
     padding: 14px 0;
 }
 
+/* Login Styles */
+.login-container {
+    background-color: #ffffff;
+    padding: 45px 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 520px;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 8px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #577883;
+}
+
+.login-container p {
+    margin-bottom: 36px;
+    color: #8a8a8a;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+}
+
+.input-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-field i {
+    position: absolute;
+    left: 16px;
+    color: #b0bac3;
+    font-size: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 48px;
+    padding: 10px 16px 10px 44px;
+    background-color: #f1f3f5;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    box-shadow: 0 0 0 3px rgba(87, 120, 131, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #b0bac3;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 28px;
+}
+
+.forgot-password a {
+    font-size: 12px;
+    color: #8a8a8a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.forgot-password a:hover {
+    color: #577883;
+    text-decoration: underline;
+}
+
+.login-container button {
+    width: 100%;
+    height: 48px;
+    background-color: #577883;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(87, 120, 131, 0.25);
+    transition: all 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #456069;
+    transform: translateY(-1px);
+}
+
+.login-container button:active {
+    transform: translateY(0);
+}
+
 /* Main Content Styles */
 .main-content {
     flex-grow: 1;

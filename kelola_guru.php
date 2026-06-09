@@ -5,10 +5,11 @@ include 'koneksi.php';
 if (!isset($_SESSION['nama'])) { $_SESSION['nama'] = ""; }
 if (!isset($_SESSION['role'])) { $_SESSION['role'] = "ADMIN"; }
 
-$query = "SELECT u.idUser as id, u.nama, u.username, u.email, r.namaRole as role, g.nip 
-          FROM user u 
-          JOIN guru g ON u.idUser = g.idUser 
+$query = "SELECT u.idUser as id, u.nama, u.username, u.email, r.namaRole as role, g.nip, mp.namaMapel
+          FROM user u
+          JOIN guru g ON u.idUser = g.idUser
           JOIN role r ON u.idRole = r.idRole
+          JOIN mata_pelajaran mp ON g.idMapel = mp.idMapel
           ORDER BY u.idUser DESC";
 $result = mysqli_query($koneksi, $query);
 ?>
@@ -78,7 +79,7 @@ $result = mysqli_query($koneksi, $query);
                                 <th>NIP</th>
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>Akses</th>
+                                <th>Mata Pelajaran</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -95,7 +96,7 @@ $result = mysqli_query($koneksi, $query);
                                         <td><?php echo htmlspecialchars($row['nip']); ?></td>
                                         <td><?php echo htmlspecialchars($row['username']); ?></td>
                                         <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                        <td class="role-text"><?php echo strtoupper($row['role']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['namaMapel']); ?></td>
                                         <td>
                                             <div class="action-btns">
                                                 <button class="btn-edit" title="Edit" onclick="openEditModal('<?php echo $row['id']; ?>', '<?php echo htmlspecialchars($row['nama'], ENT_QUOTES); ?>', '<?php echo $nip; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['email']; ?>')">
@@ -147,6 +148,18 @@ $result = mysqli_query($koneksi, $query);
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" name="password" placeholder="Masukkan password" required>
+                </div>
+                <div class="form-group">
+                    <label for="idMapel">Mata Pelajaran</label>
+                    <select name="idMapel" id="idMapel" class="form-control" required>
+                        <option value="">-- Pilih Mata Pelajaran --</option>
+                        <?php
+                        $queryMapel = mysqli_query($koneksi, "SELECT * FROM mata_pelajaran ORDER BY namaMapel ASC");
+                        while ($mapel = mysqli_fetch_assoc($queryMapel)) {
+                            echo "<option value='" . $mapel['idMapel'] . "'>" . $mapel['namaMapel'] . "</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
                 <input type="hidden" name="role" value="GURU">
                 
