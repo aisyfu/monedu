@@ -28,34 +28,35 @@ if (isset($_SESSION['login'])) {
     <script src="script.js"></script>
 </head>
 <body>
-
-    <div class="login-container">
-        <h2>MonEdu</h2>
-        <p>Silakan masuk ke akun Anda</p>
-        
-        <form action="authenticate.php" method="post">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <div class="input-field">
-                    <i class="fa-regular fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="nama@sch.id" required>
+    <body class="login-page">
+        <div class="login-container">
+            <h2>MonEdu</h2>
+            <p>Silakan masuk ke akun Anda</p>
+            
+            <form action="authenticate.php" method="post">
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" placeholder="nama@sch.id">
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-field">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" placeholder="••••••">
+                    </div>
                 </div>
-            </div>
 
-            <div class="forgot-password">
-                <a href="#">Lupa Password?</a>
-            </div>
+                <div class="forgot-password">
+                    <a href="#">Lupa Password?</a>
+                </div>
 
-            <button type="submit">LOGIN</button>
-        </form>
-    </div>
+                <button type="submit">LOGIN</button>
+            </form>
+        </div>
+    </body>
 </body>
 </html>

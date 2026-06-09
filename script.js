@@ -26,17 +26,18 @@ function closeModal(modalId) {
     if (form) { form.reset(); }
 }
 
-function openEditModal(id, nama, nip, username, email) {
-    document.getElementById('edit_id').value = id;
-    document.getElementById('edit_nama').value = nama;
-    document.getElementById('edit_nip').value = nip;
-    document.getElementById('edit_username').value = username;
-    document.getElementById('edit_email').value = email;
-    openModal('modalEdit');
-}
-
 function openDeleteModal(id, nama) {
     document.getElementById('hapus_id').value = id;
     document.getElementById('hapus_nama_text').innerText = nama;
     openModal('modalHapus');
 }
+
+// Search Tabel Script
+function searchTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('#mapelTable tbody tr');
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(input) ? '' : 'none';
+        });
+    }
