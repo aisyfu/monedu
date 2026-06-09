@@ -16,7 +16,14 @@ $totalSiswa = mysqli_fetch_assoc($querySiswa)['total'];
 $queryMapel = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM mata_pelajaran");
 $totalMapel = $queryMapel ? mysqli_fetch_assoc($queryMapel)['total'] : 0;
 
-$queryGuruTerbaru = mysqli_query($koneksi, "SELECT u.nama, u.email FROM user u JOIN role r ON u.idRole = r.idRole WHERE r.namaRole = 'Guru' ORDER BY u.idUser DESC LIMIT 5");
+$queryUserTerbaru = mysqli_query($koneksi, "
+    SELECT u.nama, u.email, r.namaRole, u.createdAt 
+    FROM user u 
+    JOIN role r ON u.idRole = r.idRole 
+    WHERE r.namaRole IN ('Guru', 'Siswa') 
+    ORDER BY u.createdAt DESC 
+    LIMIT 5
+");
 ?>
 
 <!DOCTYPE html>
@@ -28,160 +35,16 @@ $queryGuruTerbaru = mysqli_query($koneksi, "SELECT u.nama, u.email FROM user u J
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { display: flex; background-color: #f4f6f8; height: 100vh; overflow: hidden; }
+    <link rel="stylesheet" href="style.css">
+    <script src="./script.js"></script>
 
-        .sidebar {
-            width: 260px; background-color: #577883; color: #ffffff;
-            display: flex; flex-direction: column; justify-content: space-between;
-            padding: 30px 20px; transition: width 0.3s ease;
-        }
-        .sidebar.collapsed { width: 80px; align-items: center; }
-        .sidebar.collapsed .text-link, .sidebar.collapsed .sidebar-brand span { display: none; }
-        
-        .sidebar-brand {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 24px; font-weight: 700; margin-bottom: 40px; padding-left: 10px; width: 100%;
-        }
-        .sidebar.collapsed .sidebar-brand { justify-content: center; padding-left: 0; }
-        .sidebar-brand i { font-size: 18px; cursor: pointer; color: rgba(255, 255, 255, 0.7); }
-
-        .sidebar-menu { list-style: none; flex-grow: 1; width: 100%; }
-        .sidebar-menu li { margin-bottom: 8px; }
-        .sidebar-menu a {
-            display: flex; align-items: center; gap: 15px; color: rgba(255, 255, 255, 0.7);
-            text-decoration: none; padding: 14px 18px; border-radius: 12px; font-size: 15px;
-            font-weight: 500; transition: all 0.3s ease; white-space: nowrap;
-        }
-        .sidebar-menu li.active a, .sidebar-menu a:hover { background-color: rgba(255, 255, 255, 0.15); color: #ffffff; }
-        .sidebar.collapsed .sidebar-menu a { justify-content: center; padding: 14px 0; width: 100%; }
-        .sidebar.collapsed .sidebar-menu i { font-size: 20px; margin: 0; }
-
-        .sidebar-footer { width: 100%; }
-        .sidebar-footer a {
-            display: flex; align-items: center; gap: 15px; color: rgba(255, 255, 255, 0.7);
-            text-decoration: none; padding: 14px 18px; font-size: 15px;
-        }
-        .sidebar.collapsed .sidebar-footer a { justify-content: center; padding: 14px 0; }
-
-        /* Main Content Styles */
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
-        
-        .topbar {
-            background-color: #ffffff; height: 70px; display: flex; justify-content: flex-end;
-            align-items: center; padding: 0 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .profile-info { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 14px; color: #333; text-align: right; }
-        .profile-info span { color: #888; font-weight: 400; font-size: 12px; }
-        .profile-info i { font-size: 38px; color: #577883; }
-
-        /* Penyesuaian Padding Konten Bawah Topbar */
-        .page-content {
-            padding: 30px 40px; /* Jarak atas-bawah 30px, kiri-kanan 40px (sejajar topbar) */
-        }
-
-        .header {
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            color: #2c3e50;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        .header p {
-            color: #7f8c8d;
-            font-size: 15px;
-        }
-
-        .card-container {
-            display: flex;
-            gap: 20px;
-        }
-        .card {
-            background-color: white;
-            padding: 25px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-left: 5px solid #3498db;
-            transition: transform 0.3s ease;
-        }
-        .card:hover { transform: translateY(-5px); } /* Efek hover tipis */
-        .card:nth-child(2) { border-left-color: #2ecc71; }
-        .card:nth-child(3) { border-left-color: #f1c40f; }
-        
-        .card-info h3 {
-            font-size: 2.2rem;
-            color: #2c3e50;
-            margin-top: 5px;
-        }
-        .card-info p {
-            color: #95a5a6;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        .recent-section {
-            margin-top: 40px;
-            background-color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .recent-section h2 {
-            font-size: 18px;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-        }
-        .recent-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .recent-table th, .recent-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .recent-table th {
-            background-color: #f8f9fa;
-            color: #577883;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .recent-table td {
-            color: #333;
-            font-size: 14px;
-        }
-        .recent-table tr:hover {
-            background-color: #fdfdfd;
-        }
-        .badge-aktif {
-            padding: 5px 12px;
-            background-color: #e1f5fe;
-            color: #0288d1;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-    </style>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
                 <span class="text-link">MonEdu</span>
-                <i class="fa-solid fa-angle-left" id="toggleSidebar"></i>
+                <i class="fa-solid fa-angle-left" id="toggleSidebar" onclick="toggleSidebar()"></i>
             </div>
             <ul class="sidebar-menu">
                 <li class="active"><a href="dashboard_admin.php"><i class="fa-solid fa-gauge"></i> <span class="text-link">Dashboard</span></a></li>
@@ -233,41 +96,41 @@ $queryGuruTerbaru = mysqli_query($koneksi, "SELECT u.nama, u.email FROM user u J
             </div>
 
             <div class="recent-section">
-                <h2>Guru Terbaru</h2>
+                <h2>User Terbaru</h2>
                 <div class="table-responsive">
                     <table class="recent-table">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Nama</th>
-                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Tanggal Dibuat</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($guru = mysqli_fetch_assoc($queryGuruTerbaru)): ?>
-                                <tr>
-                                    <td><?php echo $guru['nama']; ?></td>
-                                    <td><?php echo $guru['email']; ?></td>
-                                </tr>
-                            <?php endwhile; ?>
+                            <?php 
+                            $no = 1;
+                            if(mysqli_num_rows($queryUserTerbaru) > 0) {
+                                while($row = mysqli_fetch_assoc($queryUserTerbaru)) {
+                                    $tanggal = date('d M Y, H:i', strtotime($row['createdAt']));
+                            ?>
+                            <tr>
+                                <td><?php echo $no++; ?></td>
+                                <td><?php echo $row['nama']; ?></td>
+                                <td><?php echo $row['namaRole']; ?></td>
+                                <td><?php echo $tanggal; ?></td>
+                            </tr>
+                            <?php 
+                                }
+                            } else {
+                                echo "<tr><td colspan='4' style='text-align:center;'>Belum ada data user.</td></tr>";
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        const toggleBtn = document.getElementById('toggleSidebar');
-        const sidebar = document.getElementById('sidebar');
-
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            if (sidebar.classList.contains('collapsed')) {
-                toggleBtn.classList.replace('fa-angle-left', 'fa-angle-right');
-            } else {
-                toggleBtn.classList.replace('fa-angle-right', 'fa-angle-left');
-            }
-        });
-    </script>
 </body>
 </html>
