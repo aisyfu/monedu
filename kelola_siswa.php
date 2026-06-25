@@ -223,6 +223,7 @@ $result = mysqli_query($koneksi, $query);
 </body>
 <script>
     function openEditModal(id, nama, nis, kelas, username, email) {
+        document.getElementById('edit_id').value = id;
         document.getElementById('edit_nama').value = nama;
         document.getElementById('edit_nis').value = nis;
         document.getElementById('edit_kelas').value = kelas;

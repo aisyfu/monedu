@@ -21,7 +21,7 @@ $sql = "
     JOIN guru g ON m.idGuru = g.idUser
     JOIN user u ON g.idUser = u.idUser
     LEFT JOIN mata_pelajaran mp ON m.idMapel = mp.idMapel
-    WHERE m.statusValidasi = 'Tervalidasi'
+    WHERE 1=1
 ";
 
 $params = [];
@@ -50,7 +50,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 // Ambil semua kategori untuk dropdown filter
-$qKat   = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM materi WHERE statusValidasi = 'Tervalidasi' ORDER BY kategori");
+$qKat   = mysqli_query($koneksi, "SELECT DISTINCT kategori FROM materi ORDER BY kategori");
 $kategoriList = [];
 while ($k = mysqli_fetch_assoc($qKat)) {
     $kategoriList[] = $k['kategori'];
@@ -156,6 +156,7 @@ while ($k = mysqli_fetch_assoc($qKat)) {
             margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
         }
         .notif.sukses { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #2e7d32; }
+        .notif.gagal { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
     </style>
 </head>
 <body>
@@ -168,7 +169,7 @@ while ($k = mysqli_fetch_assoc($qKat)) {
             <ul class="sidebar-menu">
                 <li><a href="dashboard_siswa.php"><i class="fa-solid fa-gauge"></i> <span class="text-link">Dashboard</span></a></li>
                 <li class="active"><a href="materi_siswa.php"><i class="fa-solid fa-book-open"></i> <span class="text-link">Materi</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
+                <li><a href="daftar_soal.php"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
                 <li><a href="nilai_siswa.php"><i class="fa-solid fa-chart-simple"></i> <span class="text-link">Lihat Nilai</span></a></li>
             </ul>
         </div>

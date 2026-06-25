@@ -17,7 +17,7 @@ $idMateri = (int)$_GET['id'];
 // Ambil data materi
 $stmt = mysqli_prepare($koneksi, "
     SELECT isi, judul FROM materi
-    WHERE idMateri = ? AND statusValidasi = 'Tervalidasi'
+    WHERE idMateri = ?
 ");
 mysqli_stmt_bind_param($stmt, "i", $idMateri);
 mysqli_stmt_execute($stmt);

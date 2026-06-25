@@ -2,7 +2,7 @@
 session_start();
 include 'koneksi.php';
 
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // tambahkan ini
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama     = $_POST['nama'];

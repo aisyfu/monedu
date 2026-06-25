@@ -144,9 +144,8 @@ while ($k = mysqli_fetch_assoc($resKat)) {
             <ul class="sidebar-menu">
                 <li><a href="dashboard_siswa.php"><i class="fa-solid fa-gauge"></i> <span class="text-link">Dashboard</span></a></li>
                 <li><a href="materi_siswa.php"><i class="fa-solid fa-book-open"></i> <span class="text-link">Materi</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
+                <li><a href="daftar_soal.php"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
                 <li class="active"><a href="nilai_siswa.php"><i class="fa-solid fa-chart-simple"></i> <span class="text-link">Lihat Nilai</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-user"></i> <span class="text-link">Profil</span></a></li>
             </ul>
         </div>
         <div class="sidebar-footer">

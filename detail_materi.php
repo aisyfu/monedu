@@ -25,7 +25,7 @@ $stmt = mysqli_prepare($koneksi, "
     JOIN guru g ON m.idGuru = g.idUser
     JOIN user u ON g.idUser = u.idUser
     LEFT JOIN mata_pelajaran mp ON m.idMapel = mp.idMapel
-    WHERE m.idMateri = ? AND m.statusValidasi = 'Tervalidasi'
+    WHERE m.idMateri = ?
 ");
 mysqli_stmt_bind_param($stmt, "i", $idMateri);
 mysqli_stmt_execute($stmt);
@@ -139,9 +139,8 @@ $ext      = strtolower(pathinfo($materi['isi'], PATHINFO_EXTENSION));
             <ul class="sidebar-menu">
                 <li><a href="dashboard_siswa.php"><i class="fa-solid fa-gauge"></i> <span class="text-link">Dashboard</span></a></li>
                 <li class="active"><a href="materi_siswa.php"><i class="fa-solid fa-book-open"></i> <span class="text-link">Materi</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
+                <li><a href="daftar_soal.php"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
                 <li><a href="nilai_siswa.php"><i class="fa-solid fa-chart-simple"></i> <span class="text-link">Lihat Nilai</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-user"></i> <span class="text-link">Profil</span></a></li>
             </ul>
         </div>
         <div class="sidebar-footer">

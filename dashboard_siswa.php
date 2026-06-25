@@ -10,7 +10,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] !== 'SISWA') {
 $idSiswa = $_SESSION['idUser'];
 
 // Total materi tervalidasi
-$qMateri = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM materi WHERE statusValidasi = 'Tervalidasi'");
+$qMateri = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM materi");
 $totalMateri = mysqli_fetch_assoc($qMateri)['total'];
 
 // Total nilai yang sudah dikerjakan siswa ini
@@ -62,7 +62,7 @@ $hasilTerbaru = mysqli_stmt_get_result($qTerbaru);
             <ul class="sidebar-menu">
                 <li class="active"><a href="dashboard_siswa.php"><i class="fa-solid fa-gauge"></i> <span class="text-link">Dashboard</span></a></li>
                 <li><a href="materi_siswa.php"><i class="fa-solid fa-book-open"></i> <span class="text-link">Materi</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
+                <li><a href="daftar_soal.php"><i class="fa-solid fa-pencil"></i> <span class="text-link">Soal</span></a></li>
                 <li><a href="nilai_siswa.php"><i class="fa-solid fa-chart-simple"></i> <span class="text-link">Lihat Nilai</span></a></li>
             </ul>
         </div>
